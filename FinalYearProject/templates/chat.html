@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -77,11 +78,58 @@
         </style>
     </head>
     <body>
+        
+
+        
+
+        <!--<div class="container">
+            <h2>Button Pressed: {{ButtonPressed}}</h2>
+            <form method="post">
+                <input type="submit" value="Click Me" >
+            </form>
+        </div>
+
+        <input type="button" id="script" name="scriptbutton" value=" Run Script " onclick="goPython()"/>
+        
+
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+        </script>
+ 
+        <script>
+            function goPython(){
+                /*$.ajax({
+                url: "static/js/hi.py",
+                context: document.body
+                }).done(function() {
+                    alert('your message');
+                });*/
+            
+
+                $.ajax({
+                    url: "static/js/hi.py",
+                    data: {param: 3}, //passing some input here
+                    dataType: "text",
+                    success: function(response){
+                    output = response;
+                    alert(output);
+                    }
+                }).done(function(data){
+                    console.log(data);
+                    alert(data);
+                });
+            }
+        </script>-->
 
         <h2>Popup Chat Window</h2>
         <p>Click on the button at the bottom of this page to open the chat form.</p>
         <p>Note that the button and the form is fixed - they will always be positioned to the bottom of the browser window.</p>
-
+    <form method="POST">
+        <input name="text"/>
+        
+        <input type="submit"/>
+        <div>{{ processed_text }}</div>
+        
+    </form>
         <button class="open-button" onclick="openForm()">Chat</button>
 
         <div class="chat-popup" id="myForm">
@@ -89,11 +137,13 @@
             <h1>Chat</h1>
 
             <label for="msg"><b>Message</b></label>
-            <textarea placeholder="Type message.." name="msg">
+            <textarea id="userInput" placeholder="Type message.." name="msg">
                 
             </textarea>
+            
             <h4 id="response">
-                <div>Where AM I??????????????????????????????????????</div>
+                <div>
+                </div>
             </h4>
 
             <button type="button" class="btn" onclick="getResponse()">Send</button>
@@ -101,19 +151,29 @@
         </form>
         </div>
 
+        
+        <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js">
+        </script>
+        
+
+
 
         <script>
-        function openForm() {
-        document.getElementById("myForm").style.display = "block";
-        }
+            function openForm() {
+                document.getElementById("myForm").style.display = "block";
+            }
 
-        function closeForm() {
-        document.getElementById("myForm").style.display = "none";
-        }
+            function closeForm() {
+                document.getElementById("myForm").style.display = "none";
+            }
+            
+            function getResponse() {
+                document.getElementById("response").innerHTML = "New text!";
+                
+            } 
 
-        function getResponse() {
-        document.getElementById("response").innerHTML = "New text!";
-        }
+            
+
         </script>
 
     </body>

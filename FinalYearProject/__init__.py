@@ -5,6 +5,9 @@ from io import StringIO, BytesIO
 from bs4 import BeautifulSoup
 import codecs
 
+
+
+
 def create_app():
     app = Flask(__name__)
 
@@ -53,6 +56,25 @@ def create_app():
     #print(page.read())
 
     toner_id = "response"
+    userInput = "userInput"
+
+    root = html.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html").getroot()
+    element = root.get_element_by_id(toner_id)
+    print("##############################################################################################")
+    print(element.text_content())
+
+    userText = root.xpath("//textarea[@id = '%s']" % userInput) 
+    if not userText:
+        raise Exception("Toner does not exist")
+
+    #who = userText[0].text_content()
+    print("##############################################################################################")
+    #print(who)
+
+    # change the amount
+    #amount = toner.find("div")
+    #amount.text = str("Where AM I??????????????????????????????????????")
+
 
     # find a toner
     # h4 is because we are looking for a tag "response" in a h4 tag
@@ -64,15 +86,15 @@ def create_app():
 
     # change the amount
     amount = toner.find("div")
-    amount.text = str("Where AM I??????????????????????????????????????")
+    #amount.text = str("Where AM I??????????????????????????????????????")
 
-    print(etree.tostring(root))
+    #print(etree.tostring(root))
     #et = etree.ElementTree(root)
     #et.write(sys.stdout, pretty_print=True)
     r = root.getroottree()
     
 
-    f= open("guru99.txt","w+")
+    #f= open("guru99.txt","w+")
 
     #for i in range(10):
     #    f.write("This is line %d\r\n" % (i+1))
@@ -84,7 +106,7 @@ def create_app():
 
     r.write(open('FinalYearProject/templates/chat.html', 'wb'))
 
-    res = "response"
+    #res = "response"
 
     # find a toner
     #results = root.xpath("//t[@id = '%s']" % res)

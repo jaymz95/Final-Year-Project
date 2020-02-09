@@ -9,6 +9,8 @@ flask-sqlalchemy = "*"
 selenium = "*"
 bs4 = "*"
 lxml = "*"
+chatterbot = "*"
+chatterbot-corpus = "*"
 
 [dev-packages]
 
