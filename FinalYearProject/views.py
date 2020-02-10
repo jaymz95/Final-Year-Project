@@ -2,13 +2,17 @@ from flask import Blueprint, render_template, request
 from lxml import etree, html
 from io import StringIO, BytesIO
 import random
+from chatterbot import ChatBot
 #from bs4 import BeautifulSoup
 #from selenium import webdriver
-from .model import chatbot
+#from .model import chatbot
 #from bs4 import BeautifulSoup
 #from selenium import webdriver
 
 #request = ""
+
+# Create a new chat bot named Charlie
+chatbot = ChatBot('Charlie')
 
 
 #request = input('You:')
