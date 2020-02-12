@@ -17,8 +17,7 @@ def index():
     if request.method == 'POST':
         human1 = request.form['text']
         response = chatbot.get_response(human1)
-        print("  ", human1)
-        print("  ", response)
+        
         processed_text = response
         return render_template('chat.html', processed_text=processed_text)   
     else:
