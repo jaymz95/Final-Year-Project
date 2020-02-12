@@ -15,10 +15,9 @@ def index():
     if request.method == 'GET':
         return render_template('chat.html')
     if request.method == 'POST':
-        human1 = request.form['text']
-        response = chatbot.get_response(human1)
+        userInput = request.form['text']
+        processed_text = chatbot.get_response(userInput)
         
-        processed_text = response
         return render_template('chat.html', processed_text=processed_text)   
     else:
         return render_template('chat.html')
