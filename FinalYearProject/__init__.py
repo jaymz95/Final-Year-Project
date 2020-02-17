@@ -34,7 +34,7 @@ def create_app():
     response = results[0]
 
     # change the amount
-    #amount = response.find("div")
+    # amount = response.find("div")
 
     r = root.getroottree()
 

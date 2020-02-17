@@ -13,12 +13,13 @@
 
 import pandas as pd
 import numpy as np
-import tensorflow as tf1
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior() 
+import tensorflow as tf
+#import tensorflow.compat.v1 as tf
+#tf.disable_v2_behavior() 
 import re
 import time
-tf.__version__
+print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+print(tf.__version__)
 
 
 # Most of the code to load the data is courtesy of https://github.com/suriyadeepan/practical_seq2seq/blob/master/datasets/cornell_corpus/data.py.
@@ -535,7 +536,8 @@ def seq2seq_model(input_data, target_data, keep_prob, batch_size, sequence_lengt
                   questions_vocab_to_int):
     
     '''Use the previous functions to create the training and inference logits'''
-    
+
+
     enc_embed_input = tf.contrib.layers.embed_sequence(input_data, 
                                                        answers_vocab_size+1, 
                                                        enc_embedding_size,
