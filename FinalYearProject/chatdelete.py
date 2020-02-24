@@ -564,7 +564,7 @@ def seq2seq_model(input_data, target_data, keep_prob, batch_size, sequence_lengt
 # In[38]:
 
 # Set the Hyperparameters
-epochs = 100
+epochs = 1
 batch_size = 128
 rnn_size = 512
 num_layers = 2
@@ -654,9 +654,9 @@ print(len(valid_questions))
 
 # In[43]:
 
-display_step = 100 # Check training loss after every 100 batches
+display_step = 10 # Check training loss after every 100 batches
 stop_early = 0 
-stop = 5 # If the validation loss does decrease in 5 consecutive checks, stop training
+stop = 2 # If the validation loss does decrease in 5 consecutive checks, stop training
 validation_check = ((len(train_questions))//batch_size//2)-1 # Modulus for checking validation loss
 total_train_loss = 0 # Record the training loss for each display step
 summary_valid_loss = [] # Record the validation loss for saving improvements in the model
