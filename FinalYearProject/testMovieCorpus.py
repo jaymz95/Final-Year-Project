@@ -211,6 +211,14 @@ for answer in short_answers:
             vocab[word] += 1
 
 
+threshold = 10
+count = 0
+for k,v in vocab.items():
+    if v >= threshold:
+        count += 1
+
+
+
 questions_vocab_to_int = {}
 
 word_num = 0
@@ -229,6 +237,7 @@ for word, count in vocab.items():
 
 
 
+batch_size = 128
 # Create your own input question
 #input_question = 'How are you?'
 

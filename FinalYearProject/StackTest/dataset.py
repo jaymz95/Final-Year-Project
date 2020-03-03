@@ -6,6 +6,7 @@ stackOverflow = bq_helper.BigQueryHelper(active_project="bigquery-public-data",
 
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "stackoverflow")
+
 bq_assistant.list_tables()
 
 print(bq_assistant.list_tables())
@@ -26,8 +27,29 @@ HAVING
 ORDER BY
   Year;
         """
+
+query1 = """SELECT
+  body ,
+  EXTRACT(YEAR FROM creation_date) AS Year
+
+FROM
+  `bigquery-public-data.stackoverflow.posts_questions`
+WHERE 
+  body LIKE '%dataset%' AND body LIKE '%stackoverflow%'
+GROUP BY
+  Year, body
+HAVING
+  Year > 2018 
+ORDER BY
+  Year;
+        """
+
+
+df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 30)
+
+print("\nYear\n")
 response1 = stackOverflow.query_to_pandas_safe(query1)
-print(response1.head(10))
+print(df.head(10))
 
 query2 = """SELECT User_Tenure,
        COUNT(1) AS Num_Users,
