@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 python-dateutil = "*"
 pytz = "*"
+tensorflow-federated = "*"
 
 [dev-packages]
 

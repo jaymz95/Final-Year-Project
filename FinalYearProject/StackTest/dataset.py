@@ -34,21 +34,41 @@ query1 = """SELECT
 
 FROM
   `bigquery-public-data.stackoverflow.posts_questions`
-WHERE 
-  body LIKE '%dataset%' AND body LIKE '%stackoverflow%'
 GROUP BY
   Year, body
 HAVING
-  Year > 2018 
+  body LIKE '%dataset%' AND body LIKE '%stackoverflow%' AND Year = 2016
+ORDER BY
+  Year;
+        """
+        #
+ss = """delete a Git branch locally"""
+s = """python 3.5"""
+query1 = """SELECT
+  qe.body As Q_Body,
+  EXTRACT(YEAR FROM qe.creation_date) AS Year,
+  qe.accepted_answer_id,
+  an.body
+
+FROM
+  `bigquery-public-data.stackoverflow.posts_questions` qe
+  LEFT JOIN `bigquery-public-data.stackoverflow.posts_answers` an
+  ON qe.accepted_answer_id = an.id
+GROUP BY
+  Year, qe.body, accepted_answer_id, an.body, qe.title
+HAVING
+  qe.title LIKE '%"""+ ss +"""%' AND qe.accepted_answer_id > 1
 ORDER BY
   Year;
         """
 
 
-df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 30)
+df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
+
+
 
 print("\nYear\n")
-response1 = stackOverflow.query_to_pandas_safe(query1)
+#response1 = stackOverflow.query_to_pandas_safe(query1)
 print(df.head(10))
 
 query2 = """SELECT User_Tenure,
