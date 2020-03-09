@@ -1,0 +1,20 @@
+{
+  "name": "stacktest",
+  "version": "1.0.0",
+  "description": "Query dataset on the cloud",
+  "main": "index.js",
+  "dependencies": {
+    "difflib": "^0.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm install difflib"
+  },
+  "keywords": [
+    "Satckoverflow",
+    "Dataset",
+    "queries"
+  ],
+  "author": "James Mullarkey",
+  "license": "ISC"
+}

@@ -1,4 +1,4 @@
-import bq_helper
+import bq_helper, difflib
 from bq_helper import BigQueryHelper
 # https://www.kaggle.com/sohier/introduction-to-the-bq-helper-package
 stackOverflow = bq_helper.BigQueryHelper(active_project="bigquery-public-data",
@@ -62,9 +62,11 @@ ORDER BY
   Year;
         """
 
-
 df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
 
+
+yes = difflib.get_close_matches(ss, df)
+print (yes)
 
 
 print("\nYear\n")

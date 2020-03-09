@@ -1,0 +1,25 @@
+{
+  "name": "npmpackage",
+  "version": "1.0.0",
+  "description": "project package",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm install difflib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaymz95/Final-Year-Project.git"
+  },
+  "keywords": [
+    "chatbot"
+  ],
+  "author": "James Mullarkey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaymz95/Final-Year-Project/issues"
+  },
+  "homepage": "https://github.com/jaymz95/Final-Year-Project#readme",
+  "dependencies": {
+    "difflib": "^0.2.4"
+  }
+}
