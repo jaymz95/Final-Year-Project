@@ -1,4 +1,5 @@
 import bq_helper, difflib
+from difflib import SequenceMatcher
 import numpy as np
 from bs4 import BeautifulSoup
 from bq_helper import BigQueryHelper
@@ -72,128 +73,110 @@ import re
 arr = df[['Q_Body']].to_numpy()
 
 def cleanhtml(raw_html):
-  arrr = np.array([])
-  #cleanr = re.compile('<.*?>')
-
-  #for i in raw_html:
+  parsingQuestions = np.array([])
   for i in range(0, len(raw_html)):
-    #a = numpy.append(a, a[0])
-    #cleantext = BeautifulSoup(raw_html, "lxml").text
-    encoding = 'utf-8'
-    #dele =  raw_html[i].decode(encoding)
-    
-    # decoder = np.vectorize(lambda x: x.decode('UTF-8'))
-    # dele = decoder(raw_html[i])
-    # print(array2)
-
     l = [el for el in raw_html[i]]
 
     mystring = l[0].replace('\n', ' ').replace('\r', '')
-    #l = l[0].astype(str)
-    print("-------------------------------")
-    print(mystring)
-    print("-------------------------------")
-    arrr = np.append(arrr, BeautifulSoup(mystring, "lxml").text)
-  return arrr
+    parsingQuestions = np.append(parsingQuestions, BeautifulSoup(mystring, "lxml").text)
+  return parsingQuestions
 
 
 r = cleanhtml(df[['Q_Body']].to_numpy())
 
-
-df.loc[:, df.dtypes == 'object'].head()
-print (df.loc[:, df.dtypes == 'object'].head())
-print(arr[0])
 print ("*******************************HERE******************************************")
-# f = df[['Q_Body']].to_numpy()
-# for i in range(0, len(f)):
-
-#   print(f[i])
 print(r)
 print ("*******************************HERE******************************************")
 
-#difflib.get_close_matches("delete a Git branch locally", words)
-yes = difflib.get_close_matches(ss, df)
+print(difflib.get_close_matches("NameError: name 'g' is not defined", r, n=1, cutoff=0.0))
+#yes = difflib.get_close_matches(ss, df)
 #print (df.Q_Body)
 
+
+# seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
+# print(seq.ratio())
+
+# seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="I want to delete a branch both locally and remotely. Failed Attempts to Delete Remote Branch $ git branch -d remotes/origin/bugfix error: branch 'remotes/origin/bugfix' not found.  $ git branch -d origin/bugfix error: branch 'origin/bugfix' not found.  $ git branch -rd origin/bugfix Deleted remote branch origin/bugfix (was 2a14ef7).  $ git push Everything up-to-date  $ git pull From github.com:gituser/gitproject * [new branch] bugfix -> origin/bugfix Already up-to-date.  What should I do differently to successfully delete the remotes/origin/bugfix branch both locally and remotely?")
+# print(seq.ratio())
 
 print("\nYear\n")
 #response1 = stackOverflow.query_to_pandas_safe(query1)
 print(df.head(10))
 
-query2 = """SELECT User_Tenure,
-       COUNT(1) AS Num_Users,
-       ROUND(AVG(reputation)) AS Avg_Reputation,
-       ROUND(AVG(num_badges)) AS Avg_Num_Badges
-FROM (
-  SELECT users.id AS user,
-         ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), ANY_VALUE(users.creation_date), DAY)/365) AS user_tenure,
-         ANY_VALUE(users.reputation) AS reputation,
-         SUM(IF(badges.user_id IS NULL, 0, 1)) AS num_badges
-  FROM `bigquery-public-data.stackoverflow.users` users
-  LEFT JOIN `bigquery-public-data.stackoverflow.badges` badges
-  ON users.id = badges.user_id
-  GROUP BY user
-)
-GROUP BY User_Tenure
-ORDER BY User_Tenure;
-        """
-response2 = stackOverflow.query_to_pandas_safe(query2)
-print(response2.head(10))
+# query2 = """SELECT User_Tenure,
+#        COUNT(1) AS Num_Users,
+#        ROUND(AVG(reputation)) AS Avg_Reputation,
+#        ROUND(AVG(num_badges)) AS Avg_Num_Badges
+# FROM (
+#   SELECT users.id AS user,
+#          ROUND(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), ANY_VALUE(users.creation_date), DAY)/365) AS user_tenure,
+#          ANY_VALUE(users.reputation) AS reputation,
+#          SUM(IF(badges.user_id IS NULL, 0, 1)) AS num_badges
+#   FROM `bigquery-public-data.stackoverflow.users` users
+#   LEFT JOIN `bigquery-public-data.stackoverflow.badges` badges
+#   ON users.id = badges.user_id
+#   GROUP BY user
+# )
+# GROUP BY User_Tenure
+# ORDER BY User_Tenure;
+#         """
+# response2 = stackOverflow.query_to_pandas_safe(query2)
+# print(response2.head(10))
 
-query3 = """SELECT badge_name AS First_Gold_Badge,
-       COUNT(1) AS Num_Users,
-       ROUND(AVG(tenure_in_days)) AS Avg_Num_Days
-FROM
-(
-  SELECT
-    badges.user_id AS user_id,
-    badges.name AS badge_name,
-    TIMESTAMP_DIFF(badges.date, users.creation_date, DAY) AS tenure_in_days,
-    ROW_NUMBER() OVER (PARTITION BY badges.user_id
-                       ORDER BY badges.date) AS row_number
-  FROM
-    `bigquery-public-data.stackoverflow.badges` badges
-  JOIN
-    `bigquery-public-data.stackoverflow.users` users
-  ON badges.user_id = users.id
-  WHERE badges.class = 1
-)
-WHERE row_number = 1
-GROUP BY First_Gold_Badge
-ORDER BY Num_Users DESC
-LIMIT 10;
-        """
-response3 = stackOverflow.query_to_pandas_safe(query3, max_gb_scanned=10)
-print(response3.head(10))
+# query3 = """SELECT badge_name AS First_Gold_Badge,
+#        COUNT(1) AS Num_Users,
+#        ROUND(AVG(tenure_in_days)) AS Avg_Num_Days
+# FROM
+# (
+#   SELECT
+#     badges.user_id AS user_id,
+#     badges.name AS badge_name,
+#     TIMESTAMP_DIFF(badges.date, users.creation_date, DAY) AS tenure_in_days,
+#     ROW_NUMBER() OVER (PARTITION BY badges.user_id
+#                        ORDER BY badges.date) AS row_number
+#   FROM
+#     `bigquery-public-data.stackoverflow.badges` badges
+#   JOIN
+#     `bigquery-public-data.stackoverflow.users` users
+#   ON badges.user_id = users.id
+#   WHERE badges.class = 1
+# )
+# WHERE row_number = 1
+# GROUP BY First_Gold_Badge
+# ORDER BY Num_Users DESC
+# LIMIT 10;
+#         """
+# response3 = stackOverflow.query_to_pandas_safe(query3, max_gb_scanned=10)
+# print(response3.head(10))
 
-query4 = """SELECT
-  Day_of_Week,
-  COUNT(1) AS Num_Questions,
-  SUM(answered_in_1h) AS Num_Answered_in_1H,
-  ROUND(100 * SUM(answered_in_1h) / COUNT(1),1) AS Percent_Answered_in_1H
-FROM
-(
-  SELECT
-    q.id AS question_id,
-    EXTRACT(DAYOFWEEK FROM q.creation_date) AS day_of_week,
-    MAX(IF(a.parent_id IS NOT NULL AND
-           (UNIX_SECONDS(a.creation_date)-UNIX_SECONDS(q.creation_date))/(60*60) <= 1, 1, 0)) AS answered_in_1h
-  FROM
-    `bigquery-public-data.stackoverflow.posts_questions` q
-  LEFT JOIN
-    `bigquery-public-data.stackoverflow.posts_answers` a
-  ON q.id = a.parent_id
-  WHERE EXTRACT(YEAR FROM a.creation_date) = 2016
-    AND EXTRACT(YEAR FROM q.creation_date) = 2016
-  GROUP BY question_id, day_of_week
-)
-GROUP BY
-  Day_of_Week
-ORDER BY
-  Day_of_Week;
-        """
-response4 = stackOverflow.query_to_pandas_safe(query4, max_gb_scanned=10)
-print(response4.head(10))
+# query4 = """SELECT
+#   Day_of_Week,
+#   COUNT(1) AS Num_Questions,
+#   SUM(answered_in_1h) AS Num_Answered_in_1H,
+#   ROUND(100 * SUM(answered_in_1h) / COUNT(1),1) AS Percent_Answered_in_1H
+# FROM
+# (
+#   SELECT
+#     q.id AS question_id,
+#     EXTRACT(DAYOFWEEK FROM q.creation_date) AS day_of_week,
+#     MAX(IF(a.parent_id IS NOT NULL AND
+#            (UNIX_SECONDS(a.creation_date)-UNIX_SECONDS(q.creation_date))/(60*60) <= 1, 1, 0)) AS answered_in_1h
+#   FROM
+#     `bigquery-public-data.stackoverflow.posts_questions` q
+#   LEFT JOIN
+#     `bigquery-public-data.stackoverflow.posts_answers` a
+#   ON q.id = a.parent_id
+#   WHERE EXTRACT(YEAR FROM a.creation_date) = 2016
+#     AND EXTRACT(YEAR FROM q.creation_date) = 2016
+#   GROUP BY question_id, day_of_week
+# )
+# GROUP BY
+#   Day_of_Week
+# ORDER BY
+#   Day_of_Week;
+#         """
+# response4 = stackOverflow.query_to_pandas_safe(query4, max_gb_scanned=10)
+# print(response4.head(10))
 
 
 
