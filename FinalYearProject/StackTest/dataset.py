@@ -1,4 +1,6 @@
 import bq_helper, difflib
+import numpy as np
+from bs4 import BeautifulSoup
 from bq_helper import BigQueryHelper
 # https://www.kaggle.com/sohier/introduction-to-the-bq-helper-package
 stackOverflow = bq_helper.BigQueryHelper(active_project="bigquery-public-data",
@@ -61,12 +63,49 @@ HAVING
 ORDER BY
   Year;
         """
-
+        
 df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
 
+import re
 
+# ll = list(df.fetchall())
+arr = df[['Q_Body']].to_numpy()
+
+def cleanhtml(raw_html):
+  arrr = np.array([])
+  #cleanr = re.compile('<.*?>')
+
+  #for i in raw_html:
+  for i in range(0, len(raw_html)):
+    #a = numpy.append(a, a[0])
+    #cleantext = BeautifulSoup(raw_html, "lxml").text
+    encoding = 'utf-8'
+    #dele =  raw_html[i].decode(encoding)
+    
+    decoder = np.vectorize(lambda x: x.decode('UTF-8'))
+    dele = decoder(raw_html[i])
+    print(array2)
+    arrr = np.append(arrr, BeautifulSoup(dele, "lxml").text)
+  return arrr
+
+
+r = cleanhtml(df[['Q_Body']].to_numpy())
+
+
+df.loc[:, df.dtypes == 'object'].head()
+print (df.loc[:, df.dtypes == 'object'].head())
+print(arr[0])
+print ("*******************************HERE******************************************")
+# f = df[['Q_Body']].to_numpy()
+# for i in range(0, len(f)):
+
+#   print(f[i])
+print(r)
+print ("*******************************HERE******************************************")
+
+#difflib.get_close_matches("delete a Git branch locally", words)
 yes = difflib.get_close_matches(ss, df)
-print (yes)
+#print (df.Q_Body)
 
 
 print("\nYear\n")
