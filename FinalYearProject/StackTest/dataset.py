@@ -82,10 +82,18 @@ def cleanhtml(raw_html):
     encoding = 'utf-8'
     #dele =  raw_html[i].decode(encoding)
     
-    decoder = np.vectorize(lambda x: x.decode('UTF-8'))
-    dele = decoder(raw_html[i])
-    print(array2)
-    arrr = np.append(arrr, BeautifulSoup(dele, "lxml").text)
+    # decoder = np.vectorize(lambda x: x.decode('UTF-8'))
+    # dele = decoder(raw_html[i])
+    # print(array2)
+
+    l = [el for el in raw_html[i]]
+
+    mystring = l[0].replace('\n', ' ').replace('\r', '')
+    #l = l[0].astype(str)
+    print("-------------------------------")
+    print(mystring)
+    print("-------------------------------")
+    arrr = np.append(arrr, BeautifulSoup(mystring, "lxml").text)
   return arrr
 
 
