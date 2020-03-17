@@ -23,10 +23,12 @@ def keyWords(question):
     else:
       for j in range(0, len(words)):
         print("len")
-        print(len(words[j]))
-        print(len(wordArray[i]))
+        print(len(words[j]), words[j])
+        print(len(wordArray[i]), wordArray[i])
+        print("words: ", words)
         if len(wordArray[i]) > len(words[j]):
-          np.put(words, [words[j]], [wordArray[i]])
+          np.put(words, [j], [wordArray[i]])
+          break
 
   print("hererererererree")
   print(words)
