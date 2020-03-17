@@ -9,6 +9,29 @@ from bq_helper import BigQueryHelper
 stackOverflow = bq_helper.BigQueryHelper(active_project="bigquery-public-data",
                                    dataset_name="stackoverflow")
 
+def keyWords(question):
+  wordArray = question.split()
+  print ("**********************wordArray******************")
+  print(wordArray)
+
+  words = np.array([[]])
+
+  for i in range(0, len(wordArray)):
+    if len(words) < 3:
+      words = np.append(words, wordArray[i])
+      print("i: ", i)
+    else:
+      for j in range(0, len(words)):
+        print("len")
+        print(len(words[j]))
+        print(len(wordArray[i]))
+        if len(wordArray[i]) > len(words[j]):
+          np.put(words, [words[j]], [wordArray[i]])
+
+  print("hererererererree")
+  print(words)
+
+
 
 bq_assistant = BigQueryHelper("bigquery-public-data", "stackoverflow")
 
@@ -50,7 +73,8 @@ ORDER BY
 ss = """delete a Git branch locally"""
 s = """python 3.5"""
 
-#ss = input()
+ss = input("Question? : ")
+keyWords(ss)
 query1 = """SELECT
   qe.title As Q_Title,
   EXTRACT(YEAR FROM qe.creation_date) AS Year,
@@ -133,9 +157,9 @@ print("yeahhhhh")
 print(p)
 print("yeahhhhh2\n")
 # answer = difflib.get_close_matches(result[match_index-1], aaaa, n=1, cutoff=0.0)
-# print(answer)
-answers = cleanhtml(aaaa)
-print (answers)
+# # print(answer)
+# answers = cleanhtml(aaaa)
+# print (answers)
 rr = np.where(p == int(result[match_index-1]))
 print (rr[0])
 print("Stuck on get close matches????")
@@ -143,7 +167,7 @@ print("Stuck on get close matches????")
 #m = get_close_matches_indexes(result[match_index-1], p, n=1, cutoff=0.0)[0]
 #print (get_close_matches_indexes(result[match_index+1], answers, n=1, cutoff=0.0)[0])
 print (p[rr])
-print (p[rr[0]-1])
+print (p[rr[0]-1])#answer
 
 # seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="I want to delete a branch both locally and remotely. Failed Attempts to Delete Remote Branch $ git branch -d remotes/origin/bugfix error: branch 'remotes/origin/bugfix' not found.  $ git branch -d origin/bugfix error: branch 'origin/bugfix' not found.  $ git branch -rd origin/bugfix Deleted remote branch origin/bugfix (was 2a14ef7).  $ git push Everything up-to-date  $ git pull From github.com:gituser/gitproject * [new branch] bugfix -> origin/bugfix Already up-to-date.  What should I do differently to successfully delete the remotes/origin/bugfix branch both locally and remotely?")
 # print(seq.ratio())
