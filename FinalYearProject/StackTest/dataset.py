@@ -2,6 +2,7 @@ import bq_helper, difflib
 from difflib import SequenceMatcher
 from mydifflib import get_close_matches_indexes
 import numpy as np
+import re
 from bs4 import BeautifulSoup
 from bq_helper import BigQueryHelper
 # https://www.kaggle.com/sohier/introduction-to-the-bq-helper-package
@@ -68,25 +69,18 @@ ORDER BY
         
 df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
 
-import re
-
-# ll = list(df.fetchall())
-arr = df[['Q_Title']].to_numpy()
-
 def cleanhtml(raw_html):
-
-  #a = np.zeros(shape=(5,2))
   parsingQuestions = np.array([[],[]])
   for i in range(0, len(raw_html)):
     l = [el for el in raw_html[i]]
-    print(l[1])
+    #print(l[1])
     mystring = l[0].replace('\n', ' ').replace('\r', '') # removing html formatting
 
     n = np.array([BeautifulSoup(mystring, "lxml").text, l[1]])
     parsingQuestions = np.append(parsingQuestions, n)
   return parsingQuestions
-e = df[['Q_Title', 'accepted_answer']].to_numpy()
-print(e[1])
+
+
 result = cleanhtml(df[['Q_Title', 'accepted_answer']].to_numpy())
 
 print ("*******************************HERE******************************************")
@@ -118,10 +112,17 @@ print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=
 
 print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
 match_index = (get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
-print (match_index-1)
+print (result[match_index+1])
 
 seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
 print(seq.ratio())
+
+print ("*********************************ANSWER*****************************************")
+
+
+answers = cleanhtml(df[['body', 'accepted_answer']].to_numpy())
+print(difflib.get_close_matches(result[match_index+1], answers, n=1, cutoff=0.0))
+print(answers[get_close_matches_indexes(result[match_index+1], answers, n=1, cutoff=0.0)[0]-1])
 
 # seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="I want to delete a branch both locally and remotely. Failed Attempts to Delete Remote Branch $ git branch -d remotes/origin/bugfix error: branch 'remotes/origin/bugfix' not found.  $ git branch -d origin/bugfix error: branch 'origin/bugfix' not found.  $ git branch -rd origin/bugfix Deleted remote branch origin/bugfix (was 2a14ef7).  $ git push Everything up-to-date  $ git pull From github.com:gituser/gitproject * [new branch] bugfix -> origin/bugfix Already up-to-date.  What should I do differently to successfully delete the remotes/origin/bugfix branch both locally and remotely?")
 # print(seq.ratio())
