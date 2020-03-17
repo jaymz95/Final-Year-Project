@@ -1,5 +1,6 @@
 import bq_helper, difflib
 from difflib import SequenceMatcher
+from mydifflib import get_close_matches_indexes
 import numpy as np
 from bs4 import BeautifulSoup
 from bq_helper import BigQueryHelper
@@ -48,9 +49,9 @@ ORDER BY
 ss = """delete a Git branch locally"""
 s = """python 3.5"""
 query1 = """SELECT
-  qe.body As Q_Body,
+  qe.title As Q_Title,
   EXTRACT(YEAR FROM qe.creation_date) AS Year,
-  qe.accepted_answer_id,
+  qe.accepted_answer_id AS accepted_answer,
   an.body
 
 FROM
@@ -58,9 +59,9 @@ FROM
   LEFT JOIN `bigquery-public-data.stackoverflow.posts_answers` an
   ON qe.accepted_answer_id = an.id
 GROUP BY
-  Year, qe.body, accepted_answer_id, an.body, qe.title
+  Year, qe.body, accepted_answer, an.body, qe.title
 HAVING
-  qe.title LIKE '%"""+ ss +"""%' AND qe.accepted_answer_id > 1
+  qe.title LIKE '%"""+ ss +"""%' AND accepted_answer > 1
 ORDER BY
   Year;
         """
@@ -70,31 +71,42 @@ df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
 import re
 
 # ll = list(df.fetchall())
-arr = df[['Q_Body']].to_numpy()
+arr = df[['Q_Title']].to_numpy()
 
 def cleanhtml(raw_html):
   parsingQuestions = np.array([])
   for i in range(0, len(raw_html)):
     l = [el for el in raw_html[i]]
+    print(l[1])
+    mystring = l[0].replace('\n', ' ').replace('\r', '') # removing html formatting
 
-    mystring = l[0].replace('\n', ' ').replace('\r', '')
-    parsingQuestions = np.append(parsingQuestions, BeautifulSoup(mystring, "lxml").text)
+    n = np.array([BeautifulSoup(mystring, "lxml").text, l[1]])
+    parsingQuestions = np.append(parsingQuestions, n)
   return parsingQuestions
-
-
-r = cleanhtml(df[['Q_Body']].to_numpy())
+e = df[['Q_Title', 'accepted_answer']].to_numpy()
+print()
+result = cleanhtml(df[['Q_Title', 'accepted_answer']].to_numpy())
 
 print ("*******************************HERE******************************************")
-print(r)
+print(result)
 print ("*******************************HERE******************************************")
 
-print(difflib.get_close_matches("NameError: name 'g' is not defined", r, n=1, cutoff=0.0))
+#v = difflib.get_close_matches("NameError: name 'g' is not defined", r, n=1, cutoff=0.0)
+
+#result = np.where(r[1] == v)
+print(result[1])
+
+print(difflib.get_close_matches("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
+print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
 #yes = difflib.get_close_matches(ss, df)
-#print (df.Q_Body)
+#print (df.Q_Title)
 
+print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
+match_index = (get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
+print (result[match_index])
 
-# seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
-# print(seq.ratio())
+seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
+print(seq.ratio())
 
 # seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="I want to delete a branch both locally and remotely. Failed Attempts to Delete Remote Branch $ git branch -d remotes/origin/bugfix error: branch 'remotes/origin/bugfix' not found.  $ git branch -d origin/bugfix error: branch 'origin/bugfix' not found.  $ git branch -rd origin/bugfix Deleted remote branch origin/bugfix (was 2a14ef7).  $ git push Everything up-to-date  $ git pull From github.com:gituser/gitproject * [new branch] bugfix -> origin/bugfix Already up-to-date.  What should I do differently to successfully delete the remotes/origin/bugfix branch both locally and remotely?")
 # print(seq.ratio())
