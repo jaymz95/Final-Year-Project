@@ -74,7 +74,9 @@ import re
 arr = df[['Q_Title']].to_numpy()
 
 def cleanhtml(raw_html):
-  parsingQuestions = np.array([])
+
+  #a = np.zeros(shape=(5,2))
+  parsingQuestions = np.array([[],[]])
   for i in range(0, len(raw_html)):
     l = [el for el in raw_html[i]]
     print(l[1])
@@ -84,7 +86,7 @@ def cleanhtml(raw_html):
     parsingQuestions = np.append(parsingQuestions, n)
   return parsingQuestions
 e = df[['Q_Title', 'accepted_answer']].to_numpy()
-print()
+print(e[1])
 result = cleanhtml(df[['Q_Title', 'accepted_answer']].to_numpy())
 
 print ("*******************************HERE******************************************")
@@ -94,7 +96,10 @@ print ("*******************************HERE*************************************
 #v = difflib.get_close_matches("NameError: name 'g' is not defined", r, n=1, cutoff=0.0)
 
 #result = np.where(r[1] == v)
+print(result[0])
 print(result[1])
+print(result[2])
+print(result[3])
 
 print(difflib.get_close_matches("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
 print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
@@ -103,7 +108,7 @@ print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=
 
 print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
 match_index = (get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
-print (result[match_index])
+print (match_index-1)
 
 seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
 print(seq.ratio())
