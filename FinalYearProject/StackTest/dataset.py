@@ -95,7 +95,17 @@ print ("*******************************HERE*************************************
 
 #v = difflib.get_close_matches("NameError: name 'g' is not defined", r, n=1, cutoff=0.0)
 
-#result = np.where(r[1] == v)
+# indexes = (np.array([0, 1]))
+# print(result[indexes])
+# print("wgwertuiplmmooooo")
+
+# result = np.reshape(result, (-1, 2))
+# x_new = result[0,:]
+# #result = np.where(r[1] == v)
+# print(result)
+# print(x_new)
+# print(result[np.ix_(0,0)])
+# print(result[0][1])
 print(result[0])
 print(result[1])
 print(result[2])
