@@ -15,6 +15,7 @@ def keyWords(question):
   print(wordArray)
 
   words = np.array([[]])
+  index = 0
 
   for i in range(0, len(wordArray)):
     if len(words) < 3:
@@ -22,16 +23,21 @@ def keyWords(question):
       print("i: ", i)
     else:
       for j in range(0, len(words)):
-        print("len")
-        print(len(words[j]), words[j])
-        print(len(wordArray[i]), wordArray[i])
-        print("words: ", words)
-        if len(wordArray[i]) > len(words[j]):
-          np.put(words, [j], [wordArray[i]])
-          break
+        
+        if len(wordArray[i]) > len(words[j]) and len(words[j]) < len(words[index]):
+          index = j
+
+      print("len")
+      print(len(words[j]), words[j])
+      print(len(wordArray[i]), wordArray[i])
+      print("words: ", words)
+      if len(wordArray[i]) > len(words[index]):
+        np.put(words, [index], [wordArray[i]])
+      #break
 
   print("hererererererree")
   print(words)
+  return words
 
 
 
@@ -76,7 +82,7 @@ ss = """delete a Git branch locally"""
 s = """python 3.5"""
 
 ss = input("Question? : ")
-keyWords(ss)
+words = keyWords(ss)
 query1 = """SELECT
   qe.title As Q_Title,
   EXTRACT(YEAR FROM qe.creation_date) AS Year,
@@ -90,13 +96,13 @@ FROM
 GROUP BY
   Year, qe.body, accepted_answer, an.body, qe.title
 HAVING
-  qe.title LIKE '%"""+ ss +"""%' AND accepted_answer > 1
+  qe.title LIKE '%"""+ words[0] +"""%' AND qe.title LIKE '%"""+ words[1] +"""%' AND  accepted_answer > 1
 ORDER BY
   Year;
         """
-        
+print(words[0], words[1], words[2])     
 df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
-
+print(df.head(10))
 def cleanhtml(raw_html):
   parsingQuestions = np.array([[],[]])
   for i in range(0, len(raw_html)):
