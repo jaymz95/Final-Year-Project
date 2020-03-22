@@ -15,9 +15,12 @@ def index():
     if request.method == 'GET':
         return render_template('chat.html')
     if request.method == 'POST':
+        from FinalYearProject.StackTest.dataset import query
         userInput = request.form['text']
-        processed_text = chatbot.get_response(userInput)
-        
+        #processed_text = chatbot.get_response(userInput)
+        processed_text = query(userInput)
+
+        # append istead of overright
         return render_template('chat.html', processed_text=processed_text)   
     else:
         return render_template('chat.html')

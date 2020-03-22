@@ -22,6 +22,7 @@ def create_app():
     root = html.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html").getroot()
     element = root.get_element_by_id(response_id)
 
+    # user input from views.py which gets it from the chat.html textarea
     userText = root.xpath("//textarea[@id = '%s']" % userInput) 
     if not userText:
         raise Exception("Toner does not exist")
