@@ -34,8 +34,23 @@ def keyWords(question):
       if len(wordArray[i]) > len(words[index]):
         np.put(words, [index], [wordArray[i]])
       #break
+  # ind = [0, 1, 2]
+
+  # temp = np.array([[]])
+  # temp = np.put(words)
 
   print("hererererererree")
+  # for i in range(0, len(words)):
+  #   for j in range(0, len(words)):
+  #     #if len(words[i]) < len(words[i]):
+
+  #     if len(words[i]) < len(words[j]) and i != j:
+  #       largest = j
+  #       smallest = i
+  #     if len(words[i]) > len(words[j]) and i != j:
+  #       largest = i
+  #       smallest = j
+
   print(words)
   return words
 
@@ -83,6 +98,8 @@ s = """python 3.5"""
 
 ss = input("Question? : ")
 words = keyWords(ss)
+print("WERQ????????????????????????????????????????????????????????????????????")
+words = sorted(words, key=len)  
 query1 = """SELECT
   qe.title As Q_Title,
   EXTRACT(YEAR FROM qe.creation_date) AS Year,
@@ -96,7 +113,7 @@ FROM
 GROUP BY
   Year, qe.body, accepted_answer, an.body, qe.title
 HAVING
-  qe.title LIKE '%"""+ words[0] +"""%' AND qe.title LIKE '%"""+ words[1] +"""%' AND  accepted_answer > 1
+  qe.title LIKE '%"""+ words[2] +"""%' AND qe.title LIKE '%"""+ words[1] +"""%' AND qe.title LIKE '%"""+ words[0] +"""%' AND  accepted_answer > 1
 ORDER BY
   Year;
         """

@@ -1,51 +1,57 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <style>
             body {font-family: Arial, Helvetica, sans-serif;}
-            * {box-sizing: border-box;}
 
-            /* Button used to open the chat form - fixed at the bottom of the page */
-            .open-button {
-            background-color: #555;
-            color: white;
-            padding: 16px 20px;
-            border: none;
-            cursor: pointer;
-            opacity: 0.8;
-            position: fixed;
-            bottom: 23px;
-            right: 28px;
-            width: 280px;
+            #title {
+                font-family: Cambria;
+                font-size: 50px;
+                position: static;
+                margin: 10px 5px 10px 10px;
+                text-align: center;
             }
 
             /* The popup chat - hidden by default */
             .chat-popup {
+            max-width: 1000px;
+            width: 100%;
             display: block;
-            position: fixed;
-            bottom: 0;
-            right: 15px;
-            border: 3px solid #f1f1f1;
-            z-index: 9;
+            position: static;
+            border: 1px solid #27AE60;
+            border-radius: 5px;
+            margin: auto;
             }
 
             /* Add styles to the form container */
             .form-container {
-            max-width: 300px;
-            padding: 10px;
+            max-width: 1000px;
+            padding: 10px 10px 10px 10px;
             background-color: white;
             }
 
+            #response {
+            max-width: 1000px;
+            padding: 10px;
+            background-color: white;
+                text-align: center;
+            }
+
             /* Full-width textarea */
-            .form-container textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
-            border: none;
-            background: #f1f1f1;
-            resize: none;
-            min-height: 200px;
+            #userInput{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                object-fit: contain;
+                max-width: 960px;
+                width: 96%;
+                padding: 15px 10px 15px 10px;
+                margin: auto;
+                border: none;
+                background: #f1f1f1;
+                resize: vertical;
+                min-height: 200px;
             }
 
             /* When the textarea gets focus, do something */
@@ -66,11 +72,6 @@
             opacity: 0.8;
             }
 
-            /* Add a red background color to the cancel button */
-            .form-container .cancel {
-            background-color: red;
-            }
-
             /* Add some hover effects to buttons */
             .form-container .btn:hover, .open-button:hover {
             opacity: 1;
@@ -79,25 +80,23 @@
     </head>
     <body>
         
-        <h2>Popup Chat Window</h2>
+        <h1 id="title">StackOverflow Chatbot</h1>
         
-        <button class="open-button" onclick="openForm()">Chat</button>
 
         <div class="chat-popup" id="myForm">
-        <form class="form-container" method="POST">
-            <h1>Chat</h1>
+            <form class="form-container" method="POST">
+                <h1>Chat</h1>
 
-            <label for="text"><b>Message</b></label>
-            <textarea id="userInput" placeholder="Type message.." name="text"> </textarea>
-            
+                <label for="text"><b>Message:</b></label>
+                <textarea id="userInput" placeholder="Type message.." name="text"> </textarea>
+          
+                
+                <input class="chat" type="submit"/>
+            </form>
             <h4 id="response">
                 <div>{{ processed_text }}
                 </div>
             </h4>
-            <input class="chat" type="submit"/>
-            
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-        </form>
         </div>
 
         
