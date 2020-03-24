@@ -24,7 +24,7 @@ def create_app():
     chatHtml = open("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html",'r')
     soup = BeautifulSoup(chatHtml, 'lxml')
     #print(soup)
-    tag = soup.select('h4[id="response"]')
+    tag = soup.select('div[id="result"]')
     #tag = soup.find(id='response')
 
     # from BeautifulSoup import BeautifulSoup, Tag
@@ -39,12 +39,12 @@ def create_app():
         print(len(tag))
         print("TAG: +++++++++++++++++++", tag[0])
 
-        s = BeautifulSoup()
-        new_div = s.new_tag('div')
+        s = BeautifulSoup(features="lxml")
+        new_div = s.new_tag('div', id="result")
         new_div.string='<a href="index.html" id="websiteName">Foo</a>'
         #new_div.prettify(formatter="html")
         #print(new_div.prettify(formatter="html"))
-        n = new_div.encode(formatter=None)
+        #n = new_div.encode(formatter=None)
         print(new_div)
 
         # root = ElementTree.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html").getroot()
@@ -56,38 +56,42 @@ def create_app():
         # ElementTree.dump(root)
         # print("\n\n\n\n\n\n\n\n\n\n\n")
         # print(str(ElementTree.dump(root)))
+        print(tag[0])
 
 
-        #tag[0].contents = "ohhhhhprocessed_text[0]"
+        tag[0].contents = "ohhhhhprocessed_text[0]"
         # di = Tag(tag, "div", [("id", 1)])
         # di.insert(0, "ohhhhhprocessed_text[0]")
-        #tag[0].div.replaceWith(n)
+        tag[0].replaceWith(new_div)
+        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
+        print(tag[0])
+        print(soup)
 
     #print(soup)
     # >>> <a href="index.html" id="websiteName">Foo</a>
-    chath = ElementTree.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html").getroot()
-    bodyEl = chath.find('body/div/h4')
-    c = ElementTree.Element("div")
-    c.text = "3"
+    # chath = ElementTree.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html").getroot()
+    # bodyEl = chath.find('body/div/h4')
+    # c = ElementTree.Element("div")
+    # c.text = "3"
 
-    bodyEl.insert(1, c)
-    ElementTree.dump(chath)
-    print("\n\n\n\n\n\n\n\n\n\n\n")
-    files = str(ElementTree.dump(chath))
+    # bodyEl.insert(1, c)
+    # ElementTree.dump(chath)
+    # print("\n\n\n\n\n\n\n\n\n\n\n")
+    # files = str(ElementTree.dump(chath))
 
-    #tag.string.replace_with("ohhhhhprocessed_text[0]")
-    print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
-    print(str(ElementTree.dump(chath)))
-    print("here")
-    print(ElementTree.tostring(chath, encoding="unicode", method="html", short_empty_elements=False))
-    print("there")
+    # #tag.string.replace_with("ohhhhhprocessed_text[0]")
+    # print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
+    # print(str(ElementTree.dump(chath)))
+    # print("here")
+    # print(ElementTree.tostring(chath, encoding="unicode", method="html", short_empty_elements=False))
+    # print("there")
 
     #print soup
     #33
 
     file="/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html"
     with open(file, 'w') as filetowrite:
-        filetowrite.write(ElementTree.tostring(chath, encoding="unicode", method="html"))
+        filetowrite.write(str(soup))
 
     tt = etree.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html")
     ttt = etree.tostring(tt.getroot())
