@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <style>
-            body {font-family: Arial, Helvetica, sans-serif;}
+<head>
+<meta content="width=device-width, initial-scale=1" name="viewport"> 
+</meta>
+<style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-            #title {
-                font-family: Cambria;
-                font-size: 50px;
-                position: static;
-                margin: 10px 5px 10px 10px;
-                text-align: center;
-            }
+        #title {
+            font-family: Cambria;
+            font-size: 50px;
+            position: static;
+            margin: 10px 5px 10px 10px;
+            text-align: center;
+        }
 
-            /* The popup chat - hidden by default */
-            .chat-popup {
+        /* The popup chat - hidden by default */
+        .chat-popup {
             max-width: 1000px;
             width: 100%;
             display: block;
@@ -22,104 +25,98 @@
             border: 1px solid #27AE60;
             border-radius: 5px;
             margin: auto;
-            }
+        }
 
-            /* Add styles to the form container */
-            .form-container {
+        /* Add styles to the form container */
+        .form-container {
             max-width: 1000px;
             padding: 10px 10px 10px 10px;
             background-color: white;
-            }
+        }
 
-            #response {
+        #response {
             max-width: 1000px;
             padding: 10px;
             background-color: white;
-                text-align: center;
-            }
+            text-align: center;
+        }
 
-            /* Full-width textarea */
-            #userInput{
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                object-fit: contain;
-                max-width: 960px;
-                width: 96%;
-                padding: 15px 10px 15px 10px;
-                margin: auto;
-                border: none;
-                background: #f1f1f1;
-                resize: vertical;
-                min-height: 200px;
-            }
+        /* Full-width textarea */
+        #userInput {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            object-fit: contain;
+            max-width: 960px;
+            width: 96%;
+            padding: 15px 10px 15px 10px;
+            margin: auto;
+            border: none;
+            background: #f1f1f1;
+            resize: vertical;
+            min-height: 200px;
+        }
 
-            /* When the textarea gets focus, do something */
-            .form-container textarea:focus {
+        /* When the textarea gets focus, do something */
+        .form-container textarea:focus {
             background-color: #ddd;
             outline: none;
-            }
+        }
 
-            /* Set a style for the submit/send button */
-            .form-container .btn, .chat {
+        /* Set a style for the submit/send button */
+        .form-container .btn,
+        .chat {
             background-color: #4CAF50;
             color: white;
             padding: 16px 20px;
             border: none;
             cursor: pointer;
             width: 100%;
-            margin-bottom:10px;
+            margin-bottom: 10px;
             opacity: 0.8;
-            }
+        }
 
-            /* Add some hover effects to buttons */
-            .form-container .btn:hover, .open-button:hover {
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover,
+        .open-button:hover {
             opacity: 1;
-            }
-        </style>
-    </head>
-    <body>
-        
-        <h1 id="title">StackOverflow Chatbot</h1>
-        
+        }
+    </style>
+</head>
+<body>
+<h1 id="title">StackOverflow Chatbot</h1>
+<div class="chat-popup" id="myForm">
+<form class="form-container" method="POST">
+<h1>Chat</h1>
+<label for="text"><b>Message:</b></label>
+<textarea id="userInput" name="text" placeholder="Type message.."> </textarea>
+<input class="chat" type="submit"/>
+</form>
+<h4 id="response">
+<div>
+</div>
+<div>{{ processed_text }}
+            </div>
+</h4>
+</div>
+<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js">
+</script>
+<script>
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
 
-        <div class="chat-popup" id="myForm">
-            <form class="form-container" method="POST">
-                <h1>Chat</h1>
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
 
-                <label for="text"><b>Message:</b></label>
-                <textarea id="userInput" placeholder="Type message.." name="text"> </textarea>
-          
-                
-                <input class="chat" type="submit"/>
-            </form>
-            <h4 id="response">
-                <div>{{ processed_text }}
-                </div>
-            </h4>
-        </div>
+        function getResponse() {
+            document.getElementById("response").innerHTML = "New text!";
 
-        
-        <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js">
-        </script>
+        }
 
-        <script>
-            function openForm() {
-                document.getElementById("myForm").style.display = "block";
-            }
 
-            function closeForm() {
-                document.getElementById("myForm").style.display = "none";
-            }
-            
-            function getResponse() {
-                document.getElementById("response").innerHTML = "New text!";
-                
-            } 
 
-            
-
-        </script>
-
-    </body>
+    </script>
+</body>
 </html>

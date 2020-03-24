@@ -20,7 +20,7 @@ def index():
         #processed_text = chatbot.get_response(userInput)
         processed_text = query(userInput)
 
-        # append istead of overright
-        return render_template('chat.html', processed_text=processed_text)   
+        # append instead of overright
+        return render_template('chat.html', processed_text=processed_text[0])   
     else:
         return render_template('chat.html')
