@@ -11,8 +11,8 @@ stackOverflow = bq_helper.BigQueryHelper(active_project="bigquery-public-data",
 
 def keyWords(question):
   wordArray = question.split()
-  print ("**********************wordArray******************")
-  print(wordArray)
+  # print ("**********************wordArray******************")
+  # print(wordArray)
 
   words = np.array([[]])
   index = 0
@@ -20,17 +20,17 @@ def keyWords(question):
   for i in range(0, len(wordArray)):
     if len(words) < 3:
       words = np.append(words, wordArray[i])
-      print("i: ", i)
+      # print("i: ", i)
     else:
       for j in range(0, len(words)):
         
         if len(wordArray[i]) > len(words[j]) and len(words[j]) < len(words[index]):
           index = j
 
-      print("len")
-      print(len(words[j]), words[j])
-      print(len(wordArray[i]), wordArray[i])
-      print("words: ", words)
+      # print("len")
+      # print(len(words[j]), words[j])
+      # print(len(wordArray[i]), wordArray[i])
+      # print("words: ", words)
       if len(wordArray[i]) > len(words[index]):
         np.put(words, [index], [wordArray[i]])
       #break
@@ -39,7 +39,7 @@ def keyWords(question):
   # temp = np.array([[]])
   # temp = np.put(words)
 
-  print("hererererererree")
+  # print("hererererererree")
   # for i in range(0, len(words)):
   #   for j in range(0, len(words)):
   #     #if len(words[i]) < len(words[i]):
@@ -51,7 +51,7 @@ def keyWords(question):
   #       largest = i
   #       smallest = j
 
-  print(words)
+  # print(words)
   return words
 
 
@@ -60,11 +60,11 @@ bq_assistant = BigQueryHelper("bigquery-public-data", "stackoverflow")
 
 bq_assistant.list_tables()
 
-print(bq_assistant.list_tables())
+# print(bq_assistant.list_tables())
 
-print(bq_assistant.head("comments", num_rows=20))
+# print(bq_assistant.head("comments", num_rows=20))
 
-print(bq_assistant.table_schema("comments"))
+# print(bq_assistant.table_schema("comments"))
 query1 = """SELECT
   EXTRACT(YEAR FROM creation_date) AS Year,
   COUNT(*) AS Number_of_Questions,
@@ -98,7 +98,6 @@ def query(ss):
 
   #ss = input("Question? : ")
   words = keyWords(ss)
-  print("WERQ????????????????????????????????????????????????????????????????????")
   words = sorted(words, key=len)  
   query1 = """SELECT
     qe.title As Q_Title,
@@ -117,9 +116,9 @@ def query(ss):
   ORDER BY
     Year;
           """
-  print(words[0], words[1], words[2])     
+  #print(words[0], words[1], words[2])     
   df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
-  print(df.head(10))
+  #print(df.head(10))
   def cleanhtml(raw_html):
     parsingQuestions = np.array([[],[]])
     for i in range(0, len(raw_html)):
@@ -134,9 +133,9 @@ def query(ss):
 
   result = cleanhtml(df[['accepted_answer', 'Q_Title']].to_numpy())
 
-  print ("*******************************HERE******************************************")
-  print(result)
-  print ("*******************************HERE******************************************")
+  # print ("*******************************HERE******************************************")
+  # print(result)
+  # print ("*******************************HERE******************************************")
 
   #v = difflib.get_close_matches("NameError: name 'g' is not defined", r, n=1, cutoff=0.0)
 
@@ -151,26 +150,26 @@ def query(ss):
   # print(x_new)
   # print(result[np.ix_(0,0)])
   # print(result[0][1])
-  print(result[0])
-  print(result[1])
-  print(result[2])
-  print(result[3])
+  # print(result[0])
+  # print(result[1])
+  # print(result[2])
+  # print(result[3])
 
-  print(difflib.get_close_matches("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
-  print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
+  # print(difflib.get_close_matches("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
+  # print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0))
   #yes = difflib.get_close_matches(ss, df)
   #print (df.Q_Title)
 
-  print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
+  # print(get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
   match_index = (get_close_matches_indexes("NameError: name 'g' is not defined", result, n=1, cutoff=0.0)[0])
   #print (result[match_index+1])
-  print (result[match_index-1])
-  print (result[match_index])
+  # print (result[match_index-1])
+  # print (result[match_index])
 
   seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
-  print(seq.ratio())
+  # print(seq.ratio())
 
-  print ("*********************************ANSWER*****************************************")
+  # print ("*********************************ANSWER*****************************************")
 
   #parsing = np.array([[],[]])
 
@@ -178,29 +177,29 @@ def query(ss):
   p = np.array([[],[]])
   p = np.append(aaaa, 'end')
   #parsing = aaaa
-  print("yeahhhhh")
-  print(p)
-  print("yeahhhhh2\n")
+  # print("yeahhhhh")
+  # print(p)
+  # print("yeahhhhh2\n")
   # answer = difflib.get_close_matches(result[match_index-1], aaaa, n=1, cutoff=0.0)
   # # print(answer)
   # answers = cleanhtml(aaaa)
   # print (answers)
   rr = np.where(p == int(result[match_index-1]))
-  print (rr[0])
-  print("Stuck on get close matches????")
+  # print (rr[0])
+  # print("Stuck on get close matches????")
   #print(difflib.get_close_matches(result[match_index-1], p, n=1, cutoff=0.0))
   #m = get_close_matches_indexes(result[match_index-1], p, n=1, cutoff=0.0)[0]
   #print (get_close_matches_indexes(result[match_index+1], answers, n=1, cutoff=0.0)[0])
-  print (p[rr])
-  print (p[rr[0]-1])#answer
+  # print (p[rr])
+  # print (p[rr[0]-1])#answer
   userAnswer = p[rr[0]-1]
 
   # seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="I want to delete a branch both locally and remotely. Failed Attempts to Delete Remote Branch $ git branch -d remotes/origin/bugfix error: branch 'remotes/origin/bugfix' not found.  $ git branch -d origin/bugfix error: branch 'origin/bugfix' not found.  $ git branch -rd origin/bugfix Deleted remote branch origin/bugfix (was 2a14ef7).  $ git push Everything up-to-date  $ git pull From github.com:gituser/gitproject * [new branch] bugfix -> origin/bugfix Already up-to-date.  What should I do differently to successfully delete the remotes/origin/bugfix branch both locally and remotely?")
   # print(seq.ratio())
 
-  print("\nYear\n")
+  # print("\nYear\n")
   #response1 = stackOverflow.query_to_pandas_safe(query1)
-  print(df.head(10))
+  # print(df.head(10))
 
   return userAnswer
 

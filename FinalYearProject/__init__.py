@@ -36,8 +36,8 @@ def create_app():
     # <b>Argh!<newTag id="1">Hooray!</newTag></b><i>Blah!</i>
     
     if len(tag) > 0:
-        print(len(tag))
-        print("TAG: +++++++++++++++++++", tag[0])
+        # print(len(tag))
+        # print("TAG: +++++++++++++++++++", tag[0])
 
         s = BeautifulSoup(features="lxml")
         new_div = s.new_tag('div', id="result")
@@ -45,7 +45,7 @@ def create_app():
         #new_div.prettify(formatter="html")
         #print(new_div.prettify(formatter="html"))
         #n = new_div.encode(formatter=None)
-        print(new_div)
+        # print(new_div)
 
         # root = ElementTree.parse("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html").getroot()
         # bodyEl = root.find('body/div/h4')
@@ -56,16 +56,16 @@ def create_app():
         # ElementTree.dump(root)
         # print("\n\n\n\n\n\n\n\n\n\n\n")
         # print(str(ElementTree.dump(root)))
-        print(tag[0])
+        # print(tag[0])
 
 
         tag[0].contents = "ohhhhhprocessed_text[0]"
         # di = Tag(tag, "div", [("id", 1)])
         # di.insert(0, "ohhhhhprocessed_text[0]")
         tag[0].replaceWith(new_div)
-        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
-        print(tag[0])
-        print(soup)
+        # print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
+        # print(tag[0])
+        # print(soup)
 
     #print(soup)
     # >>> <a href="index.html" id="websiteName">Foo</a>
