@@ -8,6 +8,7 @@ python-dateutil = "*"
 pytz = "*"
 tensorflow-federated = "*"
 bs4 = "*"
+markdown = "*"
 
 [dev-packages]
 

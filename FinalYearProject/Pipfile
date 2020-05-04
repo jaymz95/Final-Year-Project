@@ -11,6 +11,7 @@ bs4 = "*"
 lxml = "*"
 chatterbot = "*"
 chatterbot-corpus = "*"
+markdown = "*"
 
 [dev-packages]
 

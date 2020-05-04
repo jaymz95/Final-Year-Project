@@ -40,6 +40,12 @@
             text-align: center;
         }
 
+        #answer {text-align: left;
+            max-width: 1000px;
+            padding: 10px;
+            background-color: white;
+        }
+
         /* Full-width textarea */
         #userInput {
             display: block;
@@ -92,8 +98,9 @@
 <input class="chat" type="submit"/>
 </form>
 <h4 id="response">
-<div id="result">&lt;a href="index.html" id="websiteName"&gt;Foo&lt;/a&gt;</div>
-<div>{{ processed_text }}
+<div id="answer">{% autoescape on %}
+    {{ processed_text }}
+{% endautoescape %}
             </div>
 </h4>
 </div>
