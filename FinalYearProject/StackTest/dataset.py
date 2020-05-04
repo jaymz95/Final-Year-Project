@@ -9,6 +9,7 @@ from bq_helper import BigQueryHelper
 stackOverflow = bq_helper.BigQueryHelper(active_project="bigquery-public-data",
                                    dataset_name="stackoverflow")
 
+# Method for getting the 3 largest works in the user input to query agains the dataset
 def keyWords(question):
   wordArray = question.split()
   words = np.array([[]])
@@ -31,6 +32,7 @@ bq_assistant = BigQueryHelper("bigquery-public-data", "stackoverflow")
 
 bq_assistant.list_tables()
 
+# Main Method
 def query(ss):
 
   if len(ss.split()) >= 3:
@@ -54,25 +56,63 @@ def query(ss):
     ORDER BY
       Year;
             """
-    #print(words[0], words[1], words[2])   
-      
+    
     df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
-    #print(df.head(10))
+    # print(df.head(10))
+
+    # Error Handling if nothing is returned from query
+    if df.empty == True:
+      query1 = """SELECT
+      qe.title As Q_Title,
+      EXTRACT(YEAR FROM qe.creation_date) AS Year,
+      qe.accepted_answer_id AS accepted_answer,
+      an.body AS body
+
+      FROM
+        `bigquery-public-data.stackoverflow.posts_questions` qe
+        LEFT JOIN `bigquery-public-data.stackoverflow.posts_answers` an
+        ON qe.accepted_answer_id = an.id
+      GROUP BY
+        Year, qe.body, accepted_answer, an.body, qe.title
+      HAVING
+        qe.title LIKE '%"""+ words[1] +"""%' AND accepted_answer > 1
+      ORDER BY
+        Year;
+              """
+      
+      df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
+
+    if df.empty == True:
+      query1 = """SELECT
+      qe.title As Q_Title,
+      EXTRACT(YEAR FROM qe.creation_date) AS Year,
+      qe.accepted_answer_id AS accepted_answer,
+      an.body AS body
+
+      FROM
+        `bigquery-public-data.stackoverflow.posts_questions` qe
+        LEFT JOIN `bigquery-public-data.stackoverflow.posts_answers` an
+        ON qe.accepted_answer_id = an.id
+      GROUP BY
+        Year, qe.body, accepted_answer, an.body, qe.title
+      HAVING
+        qe.title LIKE '%"""+ words[0] +"""%' AND accepted_answer > 1
+      ORDER BY
+        Year;
+              """
+      df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
+
+    # Removes HTML formatting from dataset query results
     def cleanhtml(raw_html):
       parsingQuestions = np.array([[],[]])
       for i in range(0, len(raw_html)):
         l = [el for el in raw_html[i]]
-        print("START****************************START")
-        print(l)
-        print("END****************************END")
+        # Error handleing for 'end' string appaneded to the end if the array
         if len(l) > 1:
           mystring = l[1].replace('\n', ' ').replace('\r', '') # removing html formatting
         else:
-          print("hererererereerer")
-          print(l)
           mystring = l[0].replace('\n', ' ').replace('\r', '') # removing html formatting
         
-
         cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
 
         mystring = re.sub(cleanr, '', mystring)
@@ -80,27 +120,24 @@ def query(ss):
         n = np.array([l[0], BeautifulSoup(mystring, "lxml").text])
 
         parsingQuestions = np.append(parsingQuestions, n)
-      print("\n*******************************************\n\n\n\n\n\n*******************************************************\n")
       return parsingQuestions
 
 
+    result = np.array([[],[]])
     result = cleanhtml(df[['accepted_answer', 'Q_Title', 'body']].to_numpy())
-    match_index = (get_close_matches_indexes(ss, result, n=1, cutoff=0.0)[0])
-
-    #seq = SequenceMatcher(a="NameError: name 'g' is not defined", b="i wanted to delete git branch locally but i get the error $ git branch -d remotes/origin/incident error: branch 'remotes/origin/incident' not found.  please help me to solve this problem")
-
-    aaaa = df[['accepted_answer', 'body']].to_numpy()
-    p = np.array([[],[]])
-    p = np.append(aaaa, 'end')
-  
-    print ("answers\n")
-    print(result)
-    rr = np.where(p == int(result[match_index-1]))
-    print (rr)
     
-    userAnswer = p[rr[0]-1]
-    print(p[rr[0]-1])
-    print("Result: "+result[match_index-1])
+    originalLength = len(result)
+    result = np.reshape(result, (int(len(result)/2), 2))
+    match_index = (get_close_matches_indexes(ss, result[:,1], n=1, cutoff=0.0)[0])
+    
+    answersArray = np.array([[],[]])
+    answersArray = np.append(df[['accepted_answer', 'body']].to_numpy(), 'end')
+  
+    result = np.reshape(result, (originalLength))
+    rr = np.where(answersArray == int(result[match_index-1]))
+    
+    userAnswer = answersArray[rr[0]-1]
+    
   if len(ss.split()) < 3:
     userAnswer = np.array([[],[]])
     userAnswer = np.append(userAnswer, 'Sorry I did not understand. Could you give me more information')

@@ -6,6 +6,7 @@ from io import StringIO, BytesIO
 from bs4 import BeautifulSoup, Tag
 import codecs
 
+
 def create_app():
     app = Flask(__name__)
 
