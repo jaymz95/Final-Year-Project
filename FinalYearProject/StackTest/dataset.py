@@ -33,14 +33,16 @@ bq_assistant = BigQueryHelper("bigquery-public-data", "stackoverflow")
 bq_assistant.list_tables()
 
 # Main Method
-def query(ss):
-
-  if len(ss.split()) >= 3:
-    s = """python 3.5"""
-    words = keyWords(ss)
+def query(userInput):
+  # Error handling to check if user input has 3 or more words
+  if len(userInput.split()) >= 3:
+    words = keyWords(userInput)
+    # sorts words alphabetically
     words = sorted(words, key=len)  
+
     query1 = """SELECT
       qe.title As Q_Title,
+      an.title As A_Title,
       EXTRACT(YEAR FROM qe.creation_date) AS Year,
       qe.accepted_answer_id AS accepted_answer,
       an.body AS body
@@ -50,13 +52,13 @@ def query(ss):
       LEFT JOIN `bigquery-public-data.stackoverflow.posts_answers` an
       ON qe.accepted_answer_id = an.id
     GROUP BY
-      Year, qe.body, accepted_answer, an.body, qe.title
+      Year, qe.body, accepted_answer, an.body, qe.title, an.title
     HAVING
       qe.title LIKE '%"""+ words[2] +"""%' AND qe.title LIKE '%"""+ words[1] +"""%' AND accepted_answer > 1
     ORDER BY
       Year;
             """
-    
+    # Querying the dataset with query1
     df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
     # print(df.head(10))
 
@@ -122,23 +124,32 @@ def query(ss):
         parsingQuestions = np.append(parsingQuestions, n)
       return parsingQuestions
 
-
+    # getting answers from results of query 
     result = np.array([[],[]])
     result = cleanhtml(df[['accepted_answer', 'Q_Title', 'body']].to_numpy())
     
+    # original size of results array
     originalLength = len(result)
+    # reshaping results array to get second column to 
+    # only second column to get_close_matches_indexes (reshape to 2D array)
     result = np.reshape(result, (int(len(result)/2), 2))
-    match_index = (get_close_matches_indexes(ss, result[:,1], n=1, cutoff=0.0)[0])
+    match_index = (get_close_matches_indexes(userInput, result[:,1], n=1, cutoff=0.0)[0])
     
+    # retreining answers
     answersArray = np.array([[],[]])
     answersArray = np.append(df[['accepted_answer', 'body']].to_numpy(), 'end')
-  
+
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print(answersArray)
+    # reshape to 1D array
     result = np.reshape(result, (originalLength))
     rr = np.where(answersArray == int(result[match_index-1]))
     
-    userAnswer = answersArray[rr[0]-1]
+    userAnswer = [answersArray[rr[0]-1], answersArray[rr[0]-2]]
     
-  if len(ss.split()) < 3:
+  if len(userInput.split()) < 3:
     userAnswer = np.array([[],[]])
     userAnswer = np.append(userAnswer, 'Sorry I did not understand. Could you give me more information')
+  print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+  print(userAnswer)
   return userAnswer
