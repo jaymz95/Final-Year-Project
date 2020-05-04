@@ -21,6 +21,6 @@ def index():
         processed_text = query(userInput)
 
         # append instead of overright
-        return render_template('chat.html', processed_text=processed_text)   
+        return render_template('chat.html', processed_text=processed_text[0])   
     else:
         return render_template('chat.html')
