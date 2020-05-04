@@ -42,7 +42,6 @@ def query(userInput):
 
     query1 = """SELECT
       qe.title As Q_Title,
-      an.title As A_Title,
       EXTRACT(YEAR FROM qe.creation_date) AS Year,
       qe.accepted_answer_id AS accepted_answer,
       an.body AS body
@@ -52,7 +51,7 @@ def query(userInput):
       LEFT JOIN `bigquery-public-data.stackoverflow.posts_answers` an
       ON qe.accepted_answer_id = an.id
     GROUP BY
-      Year, qe.body, accepted_answer, an.body, qe.title, an.title
+      Year, qe.body, accepted_answer, an.body, qe.title
     HAVING
       qe.title LIKE '%"""+ words[2] +"""%' AND qe.title LIKE '%"""+ words[1] +"""%' AND accepted_answer > 1
     ORDER BY
@@ -139,17 +138,17 @@ def query(userInput):
     answersArray = np.array([[],[]])
     answersArray = np.append(df[['accepted_answer', 'body']].to_numpy(), 'end')
 
-    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-    print(answersArray)
     # reshape to 1D array
     result = np.reshape(result, (originalLength))
+    # Getting possition in array where the mathcing answer to the user input is
     rr = np.where(answersArray == int(result[match_index-1]))
     
+    #initailising return type to list with asnwer and website url
     userAnswer = [answersArray[rr[0]-1], answersArray[rr[0]-2]]
-    
+  
+  # error message for too short user input
   if len(userInput.split()) < 3:
     userAnswer = np.array([[],[]])
     userAnswer = np.append(userAnswer, 'Sorry I did not understand. Could you give me more information')
-  print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-  print(userAnswer)
+  
   return userAnswer
