@@ -1,5 +1,7 @@
 import bq_helper, difflib
 from difflib import SequenceMatcher
+# mydifflib is from stackoverflow code of difflib 
+# module changed to return index rather than contents
 from FinalYearProject.StackTest.mydifflib import get_close_matches_indexes
 import numpy as np
 import re
@@ -133,15 +135,23 @@ def query(userInput):
     # only second column to get_close_matches_indexes (reshape to 2D array)
     result = np.reshape(result, (int(len(result)/2), 2))
     match_index = (get_close_matches_indexes(userInput, result[:,1], n=1, cutoff=0.0)[0])
-    
+    matc = (difflib.get_close_matches(userInput, result[:,1], n=1, cutoff=0.0)[0])
+    print(matc)
     # retreining answers
-    answersArray = np.array([[],[]])
-    answersArray = np.append(df[['accepted_answer', 'body']].to_numpy(), 'end')
-
+    answersArray = np.array([df['accepted_answer'].to_numpy(), df['body'].to_numpy()])
+    #answersArray = np.append(df[['accepted_answer', 'body']].to_numpy(), 'end')
+    print(answersArray)
     # reshape to 1D array
     result = np.reshape(result, (originalLength))
+    print("\n\n\n\n\n\n\n\n")
+
+    print(originalLength)
+
+    print(match_index)
+    print(result)
+    print(result[match_index-1])
     # Getting possition in array where the mathcing answer to the user input is
-    rr = np.where(answersArray == int(result[match_index-1]))
+    rr = np.where(answersArray == int(result[(match_index-1)*2]))
     
     #initailising return type to list with asnwer and website url
     userAnswer = [answersArray[rr[0]-1], answersArray[rr[0]-2]]
