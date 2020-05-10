@@ -61,7 +61,6 @@ def query(userInput):
             """
     # Querying the dataset with query1
     df = bq_assistant.query_to_pandas_safe(query1, max_gb_scanned = 50)
-    # print(df.head(10))
 
     # Error Handling if nothing is returned from query
     if df.empty == True:
@@ -136,20 +135,11 @@ def query(userInput):
     result = np.reshape(result, (int(len(result)/2), 2))
     match_index = (get_close_matches_indexes(userInput, result[:,1], n=1, cutoff=0.0)[0])
     matc = (difflib.get_close_matches(userInput, result[:,1], n=1, cutoff=0.0)[0])
-    print(matc)
+    
     # retreining answers
     answersArray = np.array([df['accepted_answer'].to_numpy(), df['body'].to_numpy()])
-    #answersArray = np.append(df[['accepted_answer', 'body']].to_numpy(), 'end')
-    print(answersArray)
     # reshape to 1D array
     result = np.reshape(result, (originalLength))
-    print("\n\n\n\n\n\n\n\n")
-
-    print(originalLength)
-
-    print(match_index)
-    print(result)
-    print(result[match_index-1])
     # Getting possition in array where the mathcing answer to the user input is
     rr = np.where(answersArray == int(result[(match_index-1)*2]))
     

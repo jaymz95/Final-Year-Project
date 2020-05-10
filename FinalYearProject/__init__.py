@@ -15,7 +15,6 @@ def create_app():
 
     chatHtml = open("/home/jaymz95/Desktop/Final-Year-Project/FinalYearProject/templates/chat.html",'r')
     soup = BeautifulSoup(chatHtml, 'lxml')
-    #print(soup)
     tag = soup.select('div[id="result"]')
     
     if len(tag) > 0:
