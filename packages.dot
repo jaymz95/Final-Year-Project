@@ -1,0 +1,10 @@
+digraph "packages" {
+charset="utf-8"
+rankdir=BT
+"0" [label="FinalYearProject", shape="box"];
+"1" [label="FinalYearProject.model", shape="box"];
+"2" [label="FinalYearProject.testing", shape="box"];
+"3" [label="FinalYearProject.views", shape="box"];
+"0" -> "3" [arrowhead="open", arrowtail="none"];
+"1" -> "3" [arrowhead="open", arrowtail="none"];
+}
